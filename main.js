@@ -167,8 +167,7 @@ connection.prototype.authenticate = function(user, password){
 connection.prototype.sendpacket = function(t, p){
   var self = this;
   var buf = put().word16le(p ? p.length + 3 : 3).word8(t).buffer();
-  var ret = self.sock.write(p ? Buffer.concat([buf, p.toBuffer()]) : buf);
-  console.log('sent', ret);
+  self.sock.write(p ? Buffer.concat([buf, p.toBuffer()]) : buf);
 };
 
 connection.prototype.send_rcon = function(cmd){
