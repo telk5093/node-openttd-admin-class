@@ -85,21 +85,21 @@ connection.prototype.connect = function(server, port){
                   .tap(function(vars){
                     self.error(vars.code);
                   });
-                break;        
+                break;
           }
         });
     });
   });
-}; 
+};
 connection.prototype.authenticate = function(user, password){
   var self = this;
 
   var bufs = Buffers();
   bufs.push(Buffer(password));                    //server password
   bufs.push(zeroterm());
-  bufs.push(Buffer(user?user:"node-libOpenttdAdmin"));  //admin name
+  bufs.push(Buffer(user));  //admin name
   bufs.push(zeroterm());
-  bufs.push(Buffer("0"));                         //version 
+  bufs.push(Buffer("0"));                         //version
   bufs.push(zeroterm());
   self.sendpacket(adminPackets.ADMIN_JOIN, bufs);
 
@@ -145,7 +145,7 @@ connection.prototype.send_update_frequency = function(type, frequency){
     .word16le(frequency)
     .buffer());
   self.sendpacket(adminPackets.ADMIN_UPDATE_FREQUENCY, bufs);
-  
+
 };
 connection.prototype.send_poll = function(type, id){
   var self = this;

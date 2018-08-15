@@ -1,19 +1,19 @@
-node-libOpenttdAdmin
-====================
+node-openttd-admin
+==================
 
 A Node.js Library for connecting to Openttd's admin interface.
 
 ## Preface
 
 This module can be seen as an update to yorickvP/node-ottdadmin, however its completely rewritten to be a bit more tidy and standard, as well as working on more recent versions of node.
-I have kept the interface reasonably similar, however, its not a drop-in replacement. 
+I have kept the interface reasonably similar, however, its not a drop-in replacement.
 
 ## Basic Usage
 
 ```javascript
-var libOpenttdAdmin = require("libOpenttdAdmin"),
-  ottdConnection =  new libOpenttdAdmin.connection();
-  
+var ottd = require("node-openttd-admin"),
+  ottdConnection =  new ottd.connection();
+
 ottdConnection.connect("myserver.com", 3977);
 
 ottdConnection.on('connect', function(){
@@ -62,8 +62,8 @@ Examples can be found in the `examples/` folder
 |`chat`               |Fired on receiving a chat message                                                          |`action` - what action is included in the message (`enums.Actions`)<br/>`desttype` - where the message is aimed at (`enums.DestTypes`) <br/>`id` - message id <br/>`message` - message body<br/>`money` - amount of money sent if action is GIVE_MONEY|
 |`rcon`               |Fired on receiving the output of an rcon command                                           |`colour` - what colour the message is displayed in <br/>`output` - output of the rcon <br/>|
 |`console`            |Fired on receiving output                                                                  |`origin` - origin of the output </br>`output` - body of the output|
-      
-      
+
+
 ## Enums
 
 There are several enums provided,these are taken almost directly from yorickvP/node-ottdadmin.
@@ -75,7 +75,7 @@ This is just a list of them. Rather than listing all the entries here, please se
 + Actions
 + DestTypes
 + NetworkErrorCodes
-    
+
 ## Todo
 Just a little todo for me :)
 
