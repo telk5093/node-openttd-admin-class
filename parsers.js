@@ -37,7 +37,7 @@ module.exports.protocol = function(binaryparser, cb){
     .tap(function(vars){
       cb(vars);
     });
-  }); 
+  });
 };
 module.exports.welcome = function(binaryparser, cb){
   binaryparser.into("welcome", function(){
@@ -277,7 +277,7 @@ module.exports.rcon = function(binaryparser, cb){
       .scan('output', zeroterm())
       .tap(function(vars){ vars.output = vars.output.toString();})
       .tap(function(rcon){
-        cb(console);
+        cb(rcon);
       });
   });
 };
