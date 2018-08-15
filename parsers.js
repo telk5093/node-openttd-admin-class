@@ -259,44 +259,25 @@ module.exports.rcon = function(binaryparser, cb){
 
   binaryparser.into('rcon', function(){
     this
-      .word16('colour')
+      .word16le('colour')
       .scan('output', zeroterm())
       .tap(function(vars){ vars.output = vars.output.toString();})
-      .tap(function(rcon){
-        cb(rcon);
+      .tap(function(message){
+        cb(message);
       });
 
   });
 };
 
-module.exports.rcon = function(binaryparser, cb){
+module.exports.console = function(binaryparser, cb){
   binaryparser.into('console', function(){
     this
       .scan('origin', zeroterm())
       .tap(function(vars){ vars.origin = vars.origin.toString();})
       .scan('output', zeroterm())
       .tap(function(vars){ vars.output = vars.output.toString();})
-      .tap(function(rcon){
-        cb(rcon);
+      .tap(function(message){
+        cb(message);
       });
   });
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

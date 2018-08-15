@@ -39,8 +39,7 @@ connection.prototype.binaryStreamer = binary()
 
 connection.prototype.makeEvent = function(eventName){
   var self = this;
-  return function(data){
-    console.log("here");
+  return function(data) {
     self.emit(eventName, data);
   };
 }
@@ -50,47 +49,108 @@ connection.prototype.connect = function(server, port){
   if (self.sock){
     return callback("Already connected", null);
   }
-  self.sock = net.createConnection(port, server);
+
+  self.sock = new net.Socket();
+  self.sock.setNoDelay(true);
+
+  self.sock.on("error", function(){
+    self.error("connectionerror");
+  });
+  self.sock.on("close", function(){
+    self.error("connectionclose");
+  });
+  self.sock.on("timeout", function(){
+    self.error("connectiontimeout");
+  });
+
   self.sock.on("connect", function(){
     self.emit("connect");
-    self.sock.on("data", function(buf){
-      binary.parse(buf)
-        .word16le('pcktlen')
-        .word8('pckttype')
-        .tap(function(vars){
-          switch(vars.pckttype){
-            case adminPackets.SERVER_PROTOCOL:        parsers.protocol(this, self.makeEvent("authenticate"));         break;
-            case adminPackets.SERVER_WELCOME:         parsers.welcome(this, self.makeEvent("welcome"));               break;
-            case adminPackets.SERVER_FULL:            self.error("FULL");                                             break;
-            case adminPackets.SERVER_BANNED:          self.error("BANNED");                                           break;
-            case adminPackets.SERVER_NEWGAME:         self.emit('newgame');                                           break;
-            case adminPackets.SERVER_SHUTDOWN:        self.emit('shutdown');                                          break;
-            case adminPackets.SERVER_DATE:            parsers.date(this, self.makeEvent("date"));                     break;
-            case adminPackets.SERVER_CLIENT_JOIN:     parsers.clientjoin(this, self.makeEvent("clientjoin"));         break;
-            case adminPackets.SERVER_CLIENT_INFO:     parsers.clientinfo(this, self.makeEvent("clientinfo"));         break;
-            case adminPackets.SERVER_CLIENT_UPDATE:   parsers.clientinfo(this, self.makeEvent("clientupdate"));       break;
-            case adminPackets.SERVER_CLIENT_QUIT:     parsers.clientquit(this, self.makeEvent("clientquit"));         break;
-            case adminPackets.SERVER_CLIENT_ERROR:    parsers.clienterror(this, self.makeEvent("clienterror"));       break;
-            case adminPackets.SERVER_COMPANY_INFO:    parsers.companyinfo(this, self.makeEvent("companyinfo"));       break;
-            case adminPackets.SERVER_COMPANY_UPDATE:  parsers.companyupdate(this, self.makeEvent("companyupdate"));   break;
-            case adminPackets.SERVER_COMPANY_REMOVE:  parsers.companyremove(this, self.makeEvent("companyremove"));   break;
-            case adminPackets.SERVER_COMPANY_ECONOMY: parsers.companyeconomy(this, self.makeEvent("companyeconomy")); break;
-            case adminPackets.SERVER_COMPANY_STATS:   parsers.companystats(this, self.makeEvent("companystats"));     break;
-            case adminPackets.SERVER_CHAT:            parsers.chat(this, self.makeEvent("chat"));                     break;
-            case adminPackets.SERVER_RCON:            parsers.rcon(this, self.makeEvent("rcon"));                     break;
-            case adminPackets.SERVER_CONSOLE:         parsers.console(this, self.makeEvent("console"));               break;
-            case adminPackets.SERVER_ERROR:           //Special case
-                this
-                  .word8('code')
-                  .tap(function(vars){
-                    self.error(vars.code);
-                  });
-                break;
-          }
-        });
-    });
   });
+
+  var parsePacket = function(buf) {
+    binary.parse(buf)
+      .word16le('pcktlen')
+      .word8('pckttype')
+      .tap(function(vars){
+        switch(vars.pckttype){
+          case adminPackets.SERVER_PROTOCOL:        parsers.protocol(this, self.makeEvent("authenticate"));         break;
+          case adminPackets.SERVER_WELCOME:         parsers.welcome(this, self.makeEvent("welcome"));               break;
+          case adminPackets.SERVER_FULL:            self.error("FULL");                                             break;
+          case adminPackets.SERVER_BANNED:          self.error("BANNED");                                           break;
+          case adminPackets.SERVER_NEWGAME:         self.emit('newgame');                                           break;
+          case adminPackets.SERVER_SHUTDOWN:        self.emit('shutdown');                                          break;
+          case adminPackets.SERVER_DATE:            parsers.date(this, self.makeEvent("date"));                     break;
+          case adminPackets.SERVER_CLIENT_JOIN:     parsers.clientjoin(this, self.makeEvent("clientjoin"));         break;
+          case adminPackets.SERVER_CLIENT_INFO:     parsers.clientinfo(this, self.makeEvent("clientinfo"));         break;
+          case adminPackets.SERVER_CLIENT_UPDATE:   parsers.clientinfo(this, self.makeEvent("clientupdate"));       break;
+          case adminPackets.SERVER_CLIENT_QUIT:     parsers.clientquit(this, self.makeEvent("clientquit"));         break;
+          case adminPackets.SERVER_CLIENT_ERROR:    parsers.clienterror(this, self.makeEvent("clienterror"));       break;
+          case adminPackets.SERVER_COMPANY_INFO:    parsers.companyinfo(this, self.makeEvent("companyinfo"));       break;
+          case adminPackets.SERVER_COMPANY_UPDATE:  parsers.companyupdate(this, self.makeEvent("companyupdate"));   break;
+          case adminPackets.SERVER_COMPANY_REMOVE:  parsers.companyremove(this, self.makeEvent("companyremove"));   break;
+          case adminPackets.SERVER_COMPANY_ECONOMY: parsers.companyeconomy(this, self.makeEvent("companyeconomy")); break;
+          case adminPackets.SERVER_COMPANY_STATS:   parsers.companystats(this, self.makeEvent("companystats"));     break;
+          case adminPackets.SERVER_CHAT:            parsers.chat(this, self.makeEvent("chat"));                     break;
+          case adminPackets.SERVER_RCON:            parsers.rcon(this, self.makeEvent("rcon"));                     break;
+          case adminPackets.SERVER_CONSOLE:         parsers.console(this, self.makeEvent("console"));               break;
+          case adminPackets.SERVER_ERROR:           //Special case
+              this
+                .word8('code')
+                .tap(function(vars){
+                  self.error(vars.code);
+                });
+              break;
+          default:
+            console.log('unhandled pckttype', vars.pckttype);
+        }
+      });
+  };
+
+  var parseData = function(buf) {
+    if (self.packetBuffer === null)
+    {
+      self.packetBuffer = buf;
+      self.packetLength = buf.readUInt16LE(0);
+      buf = new Buffer(0);
+    }
+
+    if (self.packetBuffer.length + buf.length <= self.packetLength)
+    {
+      self.packetBuffer = Buffer.concat([ self.packetBuffer, buf ]);
+
+      if (self.packetBuffer.length === self.packetLength)
+      {
+        parsePacket(self.packetBuffer);
+        self.packetBuffer = null;
+      }
+      //else: wait for the next packet
+
+      return false;
+    }
+
+    // if (self.packetBuffer.length + buf.length > self.packetLength)
+
+    var check = Buffer.allocUnsafe(self.packetLength);
+    self.packetBuffer.copy(check, 0, 0, self.packetLength);
+    self.packetBuffer = self.packetBuffer.slice(self.packetLength);
+    self.packetLength = self.packetBuffer.readUInt16LE(0);
+    parsePacket(check);
+
+    return true;
+  };
+
+  self.packetBuffer = null;
+  self.packetLength = 0;
+
+  self.sock.on("data", function(buf) {
+    var temp = buf;
+    while(parseData(temp))
+      temp = new Buffer(0);
+  });
+
+  self.sock.connect({ host:server, port:port });
 };
+
 connection.prototype.authenticate = function(user, password){
   var self = this;
 
@@ -102,12 +162,13 @@ connection.prototype.authenticate = function(user, password){
   bufs.push(Buffer("0"));                         //version
   bufs.push(zeroterm());
   self.sendpacket(adminPackets.ADMIN_JOIN, bufs);
-
 };
+
 connection.prototype.sendpacket = function(t, p){
   var self = this;
-    put().word16le(p ? p.length + 3 : 3).word8(t).write(self.sock)
-    if(p) self.sock.write(p.toBuffer())
+  var buf = put().word16le(p ? p.length + 3 : 3).word8(t).buffer();
+  var ret = self.sock.write(p ? Buffer.concat([buf, p.toBuffer()]) : buf);
+  console.log('sent', ret);
 };
 
 connection.prototype.send_rcon = function(cmd){
