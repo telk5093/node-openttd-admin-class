@@ -97,7 +97,7 @@ connection.prototype.authenticate = function(user, password){
   var bufs = Buffers();
   bufs.push(Buffer(password));                    //server password
   bufs.push(zeroterm());
-  bufs.push(Buffer(user));  //admin name
+  bufs.push(Buffer(user?user:"node-openttd-admin"));  //admin name
   bufs.push(zeroterm());
   bufs.push(Buffer("0"));                         //version
   bufs.push(zeroterm());
