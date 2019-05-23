@@ -82,7 +82,7 @@ connection.prototype.connect = function(server, port){
           case adminPackets.SERVER_DATE:            parsers.date(this, self.makeEvent("date"));                     break;
           case adminPackets.SERVER_CLIENT_JOIN:     parsers.clientjoin(this, self.makeEvent("clientjoin"));         break;
           case adminPackets.SERVER_CLIENT_INFO:     parsers.clientinfo(this, self.makeEvent("clientinfo"));         break;
-          case adminPackets.SERVER_CLIENT_UPDATE:   parsers.clientinfo(this, self.makeEvent("clientupdate"));       break;
+          case adminPackets.SERVER_CLIENT_UPDATE:   parsers.clientupdate(this, self.makeEvent("clientupdate"));     break;
           case adminPackets.SERVER_CLIENT_QUIT:     parsers.clientquit(this, self.makeEvent("clientquit"));         break;
           case adminPackets.SERVER_CLIENT_ERROR:    parsers.clienterror(this, self.makeEvent("clienterror"));       break;
           case adminPackets.SERVER_COMPANY_INFO:    parsers.companyinfo(this, self.makeEvent("companyinfo"));       break;
