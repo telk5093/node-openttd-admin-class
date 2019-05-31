@@ -184,7 +184,7 @@ connection.prototype.send_chat = function(action, desttype, id, msg){
   bufs.push(put()
     .word8(action)
     .word8(desttype)
-    .word32(id)
+    .word32le(id)
     .buffer());
   bufs.push(Buffer(msg));
   bufs.push(zeroterm());
