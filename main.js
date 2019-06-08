@@ -90,6 +90,7 @@ connection.prototype.connect = function(server, port){
           case adminPackets.SERVER_COMPANY_REMOVE:  parsers.companyremove(this, self.makeEvent("companyremove"));   break;
           case adminPackets.SERVER_COMPANY_ECONOMY: parsers.companyeconomy(this, self.makeEvent("companyeconomy")); break;
           case adminPackets.SERVER_COMPANY_STATS:   parsers.companystats(this, self.makeEvent("companystats"));     break;
+          case adminPackets.SERVER_COMPANY_NEW:     parsers.companynew(this, self.makeEvent("companynew"));         break;
           case adminPackets.SERVER_CHAT:            parsers.chat(this, self.makeEvent("chat"));                     break;
           case adminPackets.SERVER_RCON:            parsers.rcon(this, self.makeEvent("rcon"));                     break;
           case adminPackets.SERVER_CONSOLE:         parsers.console(this, self.makeEvent("console"));               break;
