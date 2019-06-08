@@ -26,6 +26,7 @@ ottdConnection.on('welcome', function(data){
 ```
 
 ## Advanced Usage
+
 Examples can be found in the `examples/` folder
 
 ## Functions
@@ -77,10 +78,13 @@ This is just a list of them. Rather than listing all the entries here, please se
 + NetworkErrorCodes
 
 ## Todo
-Just a little todo for me :)
 
 + ~~Write initial documentation~~
 + Look up unknowns in documentation
 + ~~Break up long switch into functions in another file~~
 + work out some way of doing tests
 + Proof read everything
+
+## Thanks To
+
++ [KenjiE20](https://github.com/KenjiE20)
