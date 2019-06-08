@@ -239,6 +239,15 @@ module.exports.companystats = function(binaryparser, cb){
       });
   });
 };
+module.exports.companynew = function(binaryparser, cb){
+  binaryparser.into("company", function(){
+    this
+      .word8('id')
+      .tap(function(company){
+        cb(company);
+      });
+  });
+};
 
 module.exports.chat = function(binaryparser, cb){
   binaryparser.into("chat", function(){
