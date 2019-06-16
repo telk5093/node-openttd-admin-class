@@ -223,6 +223,7 @@ connection.prototype.close = function(){
   var self = this;
   self.sendpacket(adminPackets.ADMIN_QUIT);
   this.sock.end();
+  this.sock = false;
 };
 
 var zeroterm = (function(){
