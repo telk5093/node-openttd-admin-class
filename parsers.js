@@ -278,6 +278,17 @@ module.exports.rcon = function(binaryparser, cb){
   });
 };
 
+module.exports.rconend = function(binaryparser, cb){
+  binaryparser.into('rconend', function(){
+    this
+      .scan('command', zeroterm())
+      .tap(function(vars){ vars.command = vars.command.toString();})
+      .tap(function(command){
+        cb(command);
+      });
+  });
+};
+
 module.exports.console = function(binaryparser, cb){
   binaryparser.into('console', function(){
     this

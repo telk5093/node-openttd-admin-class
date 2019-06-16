@@ -93,6 +93,7 @@ connection.prototype.connect = function(server, port){
           case adminPackets.SERVER_COMPANY_NEW:     parsers.companynew(this, self.makeEvent("companynew"));         break;
           case adminPackets.SERVER_CHAT:            parsers.chat(this, self.makeEvent("chat"));                     break;
           case adminPackets.SERVER_RCON:            parsers.rcon(this, self.makeEvent("rcon"));                     break;
+          case adminPackets.SERVER_RCON_END:        parsers.rconend(this, self.makeEvent("rconend"));               break;
           case adminPackets.SERVER_CONSOLE:         parsers.console(this, self.makeEvent("console"));               break;
           case adminPackets.SERVER_ERROR:           //Special case
               this
