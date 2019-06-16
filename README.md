@@ -62,6 +62,7 @@ Examples can be found in the `examples/` folder
 |`companystats`       |Fired on receiving information about the assets of a company                               | `vehicles` - number of trains, lorries, busses, planes and ships that the company owns <br/>`stations` - number of stations of each type that the company owns|
 |`chat`               |Fired on receiving a chat message                                                          |`action` - what action is included in the message (`enums.Actions`)<br/>`desttype` - where the message is aimed at (`enums.DestTypes`) <br/>`id` - message id <br/>`message` - message body<br/>`money` - amount of money sent if action is GIVE_MONEY|
 |`rcon`               |Fired on receiving the output of an rcon command                                           |`colour` - what colour the message is displayed in <br/>`output` - output of the rcon <br/>|
+|`rconend`            |Fired on receiving the end of an rcon command                                              |`command` - the command that was send to rcon
 |`console`            |Fired on receiving output                                                                  |`origin` - origin of the output </br>`output` - body of the output|
 
 
