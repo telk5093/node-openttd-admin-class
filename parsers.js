@@ -196,17 +196,18 @@ module.exports.companyeconomy = function(binaryparser, cb){
       .word64le('money')
       .word64le('loan')
       .word64le('income')
+      .word16le('cargo')
       .into('lastquarter', function(){
         this
           .word64le('value')
-          .word64le('performance')
-          .word64le('cargo')
+          .word16le('performance')
+          .word16le('cargo')
       })
       .into('prevquarter', function(){
         this
           .word64le('value')
-          .word64le('performance')
-          .word64le('cargo')
+          .word16le('performance')
+          .word16le('cargo')
       })
       .tap(function(company){
         cb(company);
