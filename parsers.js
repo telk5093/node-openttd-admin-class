@@ -220,19 +220,19 @@ module.exports.companystats = function(binaryparser, cb){
       .word8('id')
       .into('vehicles', function(){
         this
-          .word64le('trains')
-          .word64le('lorries')
-          .word64le('busses')
-          .word64le('planes')
-          .word64le('ships')
+          .word16le('trains')
+          .word16le('lorries')
+          .word16le('busses')
+          .word16le('planes')
+          .word16le('ships')
       })
       .into('stations', function(){
         this
-          .word64le('trains')
-          .word64le('lorries')
-          .word64le('busses')
-          .word64le('planes')
-          .word64le('ships')
+          .word16le('trains')
+          .word16le('lorries')
+          .word16le('busses')
+          .word16le('planes')
+          .word16le('ships')
       })
       .tap(function(company){
         cb(company);
