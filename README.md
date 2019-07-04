@@ -38,6 +38,7 @@ Examples can be found in the `examples/` folder
 |`send_rcon`          | Send an rcon command                                                                                |`command` - command to execute on the server |
 |`send_chat`          | Send a chat message                                                                                |`action` - an action from `enums.Actions` <br/> `desttype` - a destination from `enums.DestTypes` <br/> `id` - TODO: Lookup <br/>`msg` - message body|
 |`send_update_frequency` | Set a new update frequency                                                                     |`type` - type of update (`enums.UpdateTypes`) <br/> `frequency` - frequency of update (`enums.UpdateFrequencies`) |
+|`send_ping`          | Send a ping request                                                                               |`int32` - 32bit integer that will be returned with `pong` |
 
 
 ## Events
@@ -64,6 +65,7 @@ Examples can be found in the `examples/` folder
 |`rcon`               |Fired on receiving the output of an rcon command                                           |`colour` - what colour the message is displayed in <br/>`output` - output of the rcon <br/>|
 |`rconend`            |Fired on receiving the end of an rcon command                                              |`command` - the command that was sent to rcon
 |`console`            |Fired on receiving output                                                                  |`origin` - origin of the output </br>`output` - body of the output|
+|`pong`               |Fired on receiving ping reply                                                              |`int` - integer passed to `send_pong`|
 
 
 ## Enums

@@ -302,3 +302,13 @@ module.exports.console = function(binaryparser, cb){
       });
   });
 };
+
+module.exports.pong = function(binaryparser, cb){
+  binaryparser.into('pong', function(){
+    this
+      .word32le('int')
+      .tap(function(pong){
+        cb(pong);
+      });
+  });
+};
