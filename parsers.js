@@ -196,17 +196,18 @@ module.exports.companyeconomy = function(binaryparser, cb){
       .word64le('money')
       .word64le('loan')
       .word64le('income')
+      .word16le('cargo')
       .into('lastquarter', function(){
         this
           .word64le('value')
-          .word64le('performance')
-          .word64le('cargo')
+          .word16le('performance')
+          .word16le('cargo')
       })
       .into('prevquarter', function(){
         this
           .word64le('value')
-          .word64le('performance')
-          .word64le('cargo')
+          .word16le('performance')
+          .word16le('cargo')
       })
       .tap(function(company){
         cb(company);
@@ -220,19 +221,19 @@ module.exports.companystats = function(binaryparser, cb){
       .word8('id')
       .into('vehicles', function(){
         this
-          .word64le('trains')
-          .word64le('lorries')
-          .word64le('busses')
-          .word64le('planes')
-          .word64le('ships')
+          .word16le('trains')
+          .word16le('lorries')
+          .word16le('busses')
+          .word16le('planes')
+          .word16le('ships')
       })
       .into('stations', function(){
         this
-          .word64le('trains')
-          .word64le('lorries')
-          .word64le('busses')
-          .word64le('planes')
-          .word64le('ships')
+          .word16le('trains')
+          .word16le('lorries')
+          .word16le('busses')
+          .word16le('planes')
+          .word16le('ships')
       })
       .tap(function(company){
         cb(company);
@@ -278,6 +279,17 @@ module.exports.rcon = function(binaryparser, cb){
   });
 };
 
+module.exports.rconend = function(binaryparser, cb){
+  binaryparser.into('rconend', function(){
+    this
+      .scan('command', zeroterm())
+      .tap(function(vars){ vars.command = vars.command.toString();})
+      .tap(function(command){
+        cb(command);
+      });
+  });
+};
+
 module.exports.console = function(binaryparser, cb){
   binaryparser.into('console', function(){
     this
@@ -287,6 +299,16 @@ module.exports.console = function(binaryparser, cb){
       .tap(function(vars){ vars.output = vars.output.toString();})
       .tap(function(message){
         cb(message);
+      });
+  });
+};
+
+module.exports.pong = function(binaryparser, cb){
+  binaryparser.into('pong', function(){
+    this
+      .word32le('int')
+      .tap(function(pong){
+        cb(pong);
       });
   });
 };

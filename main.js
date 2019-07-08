@@ -93,7 +93,9 @@ connection.prototype.connect = function(server, port){
           case adminPackets.SERVER_COMPANY_NEW:     parsers.companynew(this, self.makeEvent("companynew"));         break;
           case adminPackets.SERVER_CHAT:            parsers.chat(this, self.makeEvent("chat"));                     break;
           case adminPackets.SERVER_RCON:            parsers.rcon(this, self.makeEvent("rcon"));                     break;
+          case adminPackets.SERVER_RCON_END:        parsers.rconend(this, self.makeEvent("rconend"));               break;
           case adminPackets.SERVER_CONSOLE:         parsers.console(this, self.makeEvent("console"));               break;
+          case adminPackets.SERVER_PONG:            parsers.pong(this, self.makeEvent("pong"));                     break;
           case adminPackets.SERVER_ERROR:           //Special case
               this
                 .word8('code')
@@ -192,6 +194,15 @@ connection.prototype.send_chat = function(action, desttype, id, msg){
   self.sendpacket(adminPackets.ADMIN_CHAT, bufs);
 };
 
+connection.prototype.send_ping = function(int32){
+  var self = this;
+  var bufs = Buffers();
+  bufs.push(put()
+    .word32le(int32)
+    .buffer());
+  self.sendpacket(adminPackets.ADMIN_PING, bufs);
+};
+
 connection.prototype.error = function(errorMsg){
   var self = this;
   console.log("ERROR: ", errorMsg);
@@ -222,6 +233,7 @@ connection.prototype.close = function(){
   var self = this;
   self.sendpacket(adminPackets.ADMIN_QUIT);
   this.sock.end();
+  this.sock = false;
 };
 
 var zeroterm = (function(){
