@@ -177,7 +177,7 @@ class connection extends EventEmitter {
 		self.sendpacket(adminPackets.ADMIN_RCON, bufs);
 	};
 
-	send_chat = function(action, desttype, id, msg) {
+	send_chat(action, desttype, id, msg) {
 		let self = this;
 		let bufs = Buffers();
 		bufs.push(put()
@@ -199,7 +199,7 @@ class connection extends EventEmitter {
 		self.sendpacket(adminPackets.ADMIN_PING, bufs);
 	};
 
-	error = function(errorMsg){
+	error(errorMsg){
 		let self = this;
 		console.log('ERROR: ', errorMsg);
 		self.emit('error', errorMsg);
