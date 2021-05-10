@@ -1,12 +1,12 @@
 node-openttd-admin
 ==================
 
-A Node.js Library for connecting to Openttd's admin interface.
+A Node.js library for connecting to OpenTTD's admin interface.
 
 ## Preface
 
-This module can be seen as an update to yorickvP/node-ottdadmin, however its completely rewritten to be a bit more tidy and standard, as well as working on more recent versions of node.
-I have kept the interface reasonably similar, however, its not a drop-in replacement.
+This module is a slight modification of [thbaumbach/node-openttd-admin](https://github.com/thbaumbach/node-openttd-admin), which is rewritten as a Class to allow multiple connections to OpenTTD servers.
+Please refer [original README.md](https://github.com/thbaumbach/node-openttd-admin/blob/master/README.md) for further informations.
 
 ## Basic Usage
 
@@ -80,14 +80,7 @@ This is just a list of them. Rather than listing all the entries here, please se
 + DestTypes
 + NetworkErrorCodes
 
-## Todo
-
-+ ~~Write initial documentation~~
-+ Look up unknowns in documentation
-+ ~~Break up long switch into functions in another file~~
-+ work out some way of doing tests
-+ Proof read everything
-
 ## Thanks To
+
 
 + [KenjiE20](https://github.com/KenjiE20)
