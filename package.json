@@ -1,33 +1,9 @@
 {
-  "_from": "node-openttd-admin",
-  "_id": "node-openttd-admin@0.2.4",
-  "_inBundle": false,
-  "_integrity": "sha512-XkTjMLjXevWl/y4dOr7ot/i4oknLEEMztG6CPvkZnHKsaVba4NUAShQQUm7+pQhe5Di1xOm37v32R2ZdSN3TBQ==",
-  "_location": "/node-openttd-admin",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "node-openttd-admin",
-    "name": "node-openttd-admin",
-    "escapedName": "node-openttd-admin",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/node-openttd-admin/-/node-openttd-admin-0.2.4.tgz",
-  "_shasum": "b2b6c58f2f499a4f4649d2a6dd7a8fae444d819f",
-  "_spec": "node-openttd-admin",
-  "_where": "/home/telk/openttdbot",
   "author": {
-    "name": "Sam Bolingbroke and Thomas Baumbach"
+    "name": "Willem TELK Lee"
   },
   "bugs": {
-    "url": "https://github.com/thbaumbach/node-openttd-admin/issues"
+    "url": "https://github.com/telk5093/node-openttd-admin-class/issues"
   },
   "bundleDependencies": false,
   "dependencies": {
@@ -36,8 +12,8 @@
     "put": "0.0.6"
   },
   "deprecated": false,
-  "description": "A Node.js Library for connecting to Openttd's admin interface.",
-  "homepage": "https://github.com/thbaumbach/node-openttd-admin",
+  "description": "A nodejs library for connecting to OpenTTD's admin interface with allowing multiple connections.",
+  "homepage": "https://github.com/telk5093/node-openttd-admin-class",
   "keywords": [
     "openttd",
     "ottd",
@@ -46,10 +22,10 @@
   ],
   "license": "MIT",
   "main": "main.js",
-  "name": "node-openttd-admin",
+  "name": "node-openttd-admin-class",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thbaumbach/node-openttd-admin.git"
+    "url": "git+https://github.com/telk5093/node-openttd-admin-class.git"
   },
-  "version": "0.2.4"
+  "version": "0.2.5"
 }
